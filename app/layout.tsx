@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "EMS Dashboard",
+  title: "EMS Tool Suite",
   description: "Troubleshoot EMS queries faster",
 };
 
@@ -19,9 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-blue-400">
-       <body className={inter.className}>
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

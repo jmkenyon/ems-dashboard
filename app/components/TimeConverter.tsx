@@ -28,25 +28,36 @@ const TimeConverter = () => {
   const [njTime, setNjTime] = useState("");
   const [chicagoTime, setChicagoTime] = useState("");
   const [hkTime, setHkTime] = useState("");
+  const regex = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
 
-  const convertTime = (
-    time: string,
-    fromZone: string,
-    toZone: string
-  ) => {
+  const convertTime = (time: string, fromZone: string, toZone: string) => {
     const [hours, minutes, seconds] = time.split(":").map(Number);
 
     const sourceTime = DateTime.fromObject(
-        { hour: hours, minute: minutes, second: seconds },
-        { zone: fromZone }
-    )
+      { hour: hours, minute: minutes, second: seconds },
+      { zone: fromZone }
+    );
 
-    const convertedTime = sourceTime.setZone(toZone)
+    const convertedTime = sourceTime.setZone(toZone);
     return convertedTime.toFormat("HH:mm:ss");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!sourceZone) {
+      alert("Please select a valid server.");
+      return;
+    }
+
+    if (!timestamp) {
+      alert("Please enter a timestamp.");
+      return;
+    }
+
+    if (!regex.test(timestamp)) {
+      alert("Please enter a valid timestamp in HH:MM:SS format.");
+      return;
+    }
     setShowResults(true);
 
     const convertedTimes = targetZones.map((zone) =>
