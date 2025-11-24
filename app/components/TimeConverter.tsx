@@ -74,14 +74,14 @@ const TimeConverter = () => {
 
   return (
     <div className=" flex flex-col justify-center items-center py-20">
-      <div className="bg-white  text-blue-950 p-20 flex flex-col rounded-2xl shadow-2xl">
-        <h1 className="text-3xl font-bold mb-6">Time Stamp Converter</h1>
-        <p className="text-gray-500 pb-10">
+      <div className="bg-white  text-blue-950 sm:p-20 p-10 flex flex-col rounded-2xl shadow-2xl">
+        <h1 className="sm:text-3xl text-lg font-bold mb-6">Time Stamp Converter</h1>
+        <p className="text-gray-500 pb-10 sm:text-md text-sm">
           Enter the prefix of the server and the timestamp you are looking to
           convert
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <label>
+          <label className="text-sm sm:text-md">
             Choose a server:
             <select
               className="ml-4"
@@ -94,7 +94,7 @@ const TimeConverter = () => {
               <option value="LD6">LD6</option>
             </select>
           </label>
-          <label className="flex flex-row gap-3">
+          <label className="flex flex-row gap-3 text-sm sm:text-md">
             Enter a timestamp:
             <input
               name="timestamp"
