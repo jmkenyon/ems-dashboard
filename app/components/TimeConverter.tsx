@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DateTime } from "luxon";
+import { time } from "console";
 
 const TimeConverter = () => {
   const [server, setServer] = useState("");
@@ -28,7 +29,8 @@ const TimeConverter = () => {
   const [njTime, setNjTime] = useState("");
   const [chicagoTime, setChicagoTime] = useState("");
   const [hkTime, setHkTime] = useState("");
-  const regex = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
+  const regexColon = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
+  const regexNumbers = /^([01]\d|2[0-3])([0-5]\d)([0-5]\d)$/;
 
   const convertTime = (time: string, fromZone: string, toZone: string) => {
     const [hours, minutes, seconds] = time.split(":").map(Number);
@@ -54,7 +56,20 @@ const TimeConverter = () => {
       return;
     }
 
-    if (!regex.test(timestamp)) {
+    if (regexNumbers.test(timestamp)) {
+      const formattedTimestamp = timestamp.replace(
+        /(\d{2})(\d{2})(\d{2})/,
+        "$1:$2:$3"
+      );
+      setTimestamp(formattedTimestamp);
+      if (!regexColon.test(formattedTimestamp)) {
+        alert("Please enter a valid timestamp in HH:MM:SS format.");
+        return;
+      }
+      return;
+    }
+
+    if (!regexColon.test(timestamp)) {
       alert("Please enter a valid timestamp in HH:MM:SS format.");
       return;
     }
@@ -75,7 +90,9 @@ const TimeConverter = () => {
   return (
     <div className=" flex flex-col justify-center items-center py-20">
       <div className="bg-white  text-blue-950 sm:p-20 p-10 flex flex-col rounded-2xl shadow-2xl">
-        <h1 className="sm:text-3xl text-lg font-bold mb-6">Time Stamp Converter</h1>
+        <h1 className="sm:text-3xl text-lg font-bold mb-6">
+          Time Stamp Converter
+        </h1>
         <p className="text-gray-500 pb-10 sm:text-base text-sm">
           Enter the prefix of the server and the timestamp you are looking to
           convert
