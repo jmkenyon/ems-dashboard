@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { DateTime } from "luxon";
-import { time } from "console";
+import { Button } from "@/components/ui/button";
+
 
 const TimeConverter = () => {
   const [server, setServer] = useState("");
@@ -121,12 +122,13 @@ const TimeConverter = () => {
               onChange={(e) => setTimestamp(e.target.value)}
             />
           </label>
-          <button
+          <Button
             type="submit"
-            className="bg-blue-600 text-white py-3 px-4 rounded mt-10 hover:bg-blue-700 cursor-pointer"
+            variant="elevated"
+            className="rounded-full border-transparent px-3.5 text-lg mt-10 bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950"
           >
             Convert time
-          </button>
+          </Button>
         </form>
         {showResults && (
           <div className="max-w-1/2">
