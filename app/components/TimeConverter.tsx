@@ -90,7 +90,7 @@ const TimeConverter = () => {
 
   return (
     <div className=" flex flex-col justify-center items-center py-20">
-      <div className="bg-white  text-blue-950 sm:p-20 p-10 flex flex-col rounded-2xl shadow-2xl">
+      <div className="bg-white  text-blue-950 sm:p-20 p-10 flex flex-col rounded-2xl shadow-2xl shadow-black/50">
         <h1 className="sm:text-3xl text-lg font-bold mb-6">
           Time Stamp Converter
         </h1>
