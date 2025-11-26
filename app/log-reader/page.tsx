@@ -186,7 +186,7 @@ const Page = () => {
               <p> {restartOutput}</p>
             </div>
 
-            {bbgOutput}
+
 
             {Object.entries(errorLines).map(([keyword, lines]) => (
               <div key={keyword} className="mb-6">
