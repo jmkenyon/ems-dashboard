@@ -45,8 +45,8 @@ const Page = () => {
     const results = lines
       .flatMap((line) => {
         const foundKeywords = keyWords.filter((keyword) =>
-          line.includes(keyword)
-        );
+            line.toLowerCase().includes(keyword.toLowerCase())
+          );
         return foundKeywords.length > 0
           ? { line, keywords: foundKeywords }
           : [];
