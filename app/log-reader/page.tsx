@@ -14,7 +14,7 @@ const Page = () => {
 
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
-
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [bbgOutput, setBbgOutput] = React.useState<string>("");
   const [output, setOutput] = React.useState<string>("");
   const [restartOutput, setRestartOutput] = React.useState<string>("");
@@ -26,6 +26,7 @@ const Page = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) {
+      alert("Something went wrong!");
       return;
     }
 
@@ -138,6 +139,7 @@ const Page = () => {
         "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
       );
     }
+    setIsLoading(false);
   };
 
   const handleClearLog = () => {
@@ -148,6 +150,7 @@ const Page = () => {
     setBbgOutput("");
     setOutput("");
     setRestartOutput("");
+    inputRef.current?.click();
 
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -164,24 +167,36 @@ const Page = () => {
           Upload a TAL log for analysis
         </p>
 
-        <Button
-          variant="elevated"
-          className={cn(
-            "rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
-            clearLog
-              ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
-              : ""
-          )}
-          onClick={() => {
-            if (clearLog) {
-              handleClearLog();
-            } else {
-              inputRef.current?.click();
-            }
-          }}
-        >
-          {clearLog ? "Clear log" : "Upload TAL log"}
-        </Button>
+        {isLoading ? (
+            <Button
+              variant="outline"
+              className="rounded-full border-transparent px-3.5 text-lg bg-gray-500 text-black"
+              disabled>
+                Analysing...
+              </Button>
+            ) : (
+                <Button
+                variant="elevated"
+                className={cn(
+                  "rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+                  clearLog
+                    ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
+                    : ""
+                )}
+                onClick={() => {
+                  if (clearLog) {
+                    handleClearLog();
+                  } else {
+                    setIsLoading(true);
+                    inputRef.current?.click();
+                  }
+                }}
+              >
+                {clearLog ? "Upload new log" : "Upload TAL log"}
+              </Button>
+            )}
+
+
 
         <input
           type="file"
