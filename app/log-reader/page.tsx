@@ -31,13 +31,14 @@ const Page = () => {
     }
     setIsLoading(true);
     setClearLog(true);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target?.result;
-
-      analyseFile(text as string);
-    };
-    reader.readAsText(file);
+    setTimeout(() => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result;
+        analyseFile(text as string);
+      };
+      reader.readAsText(file);
+    }, 50);
   };
 
   const analyseFile = (fileContent: string) => {
