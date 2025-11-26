@@ -128,7 +128,7 @@ const Page = () => {
           </a>
         </>
       )
-      setLoading(false);
+     
     }
 
 
@@ -142,6 +142,7 @@ const Page = () => {
           "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
         );
       }
+      setLoading(false);
   };
 
   const handleClearLog = () => {
