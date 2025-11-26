@@ -11,7 +11,6 @@ const Page = () => {
     "Failed to open BB connection",
     "rt364.exe: Analysis:  Request has timed out...",
   ];
-  const [isLoading, setIsLoading] = useState(false);
 
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
@@ -29,18 +28,12 @@ const Page = () => {
     if (!file) {
       return;
     }
-    setIsLoading(true);
+
     setClearLog(true);
     const reader = new FileReader();
-    reader.onload = async (e) => {
+    reader.onload = (e) => {
       const text = e.target?.result;
-
-      try {
-        await analyseFile(text as string);
-      } finally {
-        setIsLoading(false);
-      }
-    
+      analyseFile(text as string);
     };
     reader.readAsText(file);
   };
@@ -145,8 +138,6 @@ const Page = () => {
         "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
       );
     }
-
-    setIsLoading(false);
   };
 
   const handleClearLog = () => {
@@ -164,7 +155,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center p-10 mt-20">
+    <div className="flex flex-col justify-center items-center p-10 mt-10">
       <div className="bg-white shadow-2xl rounded-2xl p-15 flex flex-col justify-center shadow-black/50">
         <h1 className="text-3xl font-bold text-blue-950 mb-6">
           TAL Log Reader
@@ -172,39 +163,25 @@ const Page = () => {
         <p className="pb-20 text-gray-500 text-base">
           Upload a TAL log for analysis
         </p>
-        {isLoading ? (
-          <Button
-            variant="elevated"
-            className={cn(
-              "rounded-full border-transparent px-3.5 text-lg bg-gray-400 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
-              clearLog
-                ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
-                : ""
-            )}
-            disabled
-          >
-            Analysing...
-          </Button>
-        ) : (
-          <Button
-            variant="elevated"
-            className={cn(
-              "rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
-              clearLog
-                ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
-                : ""
-            )}
-            onClick={() => {
-              if (clearLog) {
-                handleClearLog();
-              } else {
-                inputRef.current?.click();
-              }
-            }}
-          >
-            {clearLog ? "Clear log" : "Upload TAL log"}
-          </Button>
-        )}
+
+        <Button
+          variant="elevated"
+          className={cn(
+            "rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+            clearLog
+              ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
+              : ""
+          )}
+          onClick={() => {
+            if (clearLog) {
+              handleClearLog();
+            } else {
+              inputRef.current?.click();
+            }
+          }}
+        >
+          {clearLog ? "Clear log" : "Upload TAL log"}
+        </Button>
 
         <input
           type="file"
