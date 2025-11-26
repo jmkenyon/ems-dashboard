@@ -13,7 +13,7 @@ const Page = () => {
     "rt364.exe: Analysis:  Request has timed out..."
     
   ];
-//   const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
@@ -44,6 +44,7 @@ const Page = () => {
   };
 
   const analyseFile = (fileContent: string) => {
+    setIsLoading(true);
    
     const lines = fileContent.split("\n");
 
@@ -143,6 +144,8 @@ const Page = () => {
         );
       }
 
+    setIsLoading(false);
+
   };
 
   const handleClearLog = () => {
@@ -153,7 +156,7 @@ const Page = () => {
     setBbgOutput("");
     setOutput("");
     setRestartOutput("");
-    
+
 
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -169,7 +172,19 @@ const Page = () => {
         <p className="pb-20 text-gray-500 text-base">
           Upload a TAL log for analysis
         </p>
+        {isLoading ? (
         <Button
+          variant="elevated"
+          className={cn("rounded-full border-transparent px-3.5 text-lg bg-gray-400 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+            clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" : ""
+            
+          )}
+          disabled
+          >
+            Analysing...
+          </Button>
+
+        ): (        <Button
           variant="elevated"
           className={cn("rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
             clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" : ""
@@ -183,8 +198,11 @@ const Page = () => {
             }
           }}
         >
-          {clearLog ? "Upload Another Log" : "Upload TAL log"}
-        </Button>
+          {clearLog ? "Clear log" : "Upload TAL log"}
+        </Button>)}
+
+
+
 
         <input
           type="file"
