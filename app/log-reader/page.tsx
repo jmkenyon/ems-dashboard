@@ -5,19 +5,16 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 const Page = () => {
-
   const keyWords = [
     "SOAP",
     "I/O completion error",
     "Failed to open BB connection",
-    "rt364.exe: Analysis:  Request has timed out..."
-    
+    "rt364.exe: Analysis:  Request has timed out...",
   ];
   const [isLoading, setIsLoading] = useState(false);
 
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
-
 
   const [bbgOutput, setBbgOutput] = React.useState<string>("");
   const [output, setOutput] = React.useState<string>("");
@@ -28,11 +25,11 @@ const Page = () => {
   const [clearLog, setClearLog] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     const file = event.target.files?.[0];
     if (!file) {
       return;
     }
+    setIsLoading(true);
     setClearLog(true);
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -44,15 +41,13 @@ const Page = () => {
   };
 
   const analyseFile = (fileContent: string) => {
-    setIsLoading(true);
-   
     const lines = fileContent.split("\n");
 
     const results = lines
       .flatMap((line) => {
         const foundKeywords = keyWords.filter((keyword) =>
-            line.toLowerCase().includes(keyword.toLowerCase())
-          );
+          line.toLowerCase().includes(keyword.toLowerCase())
+        );
         return foundKeywords.length > 0
           ? { line, keywords: foundKeywords }
           : [];
@@ -66,12 +61,14 @@ const Page = () => {
       grouped[keyword] = results
         .filter((r) => r.keywords.includes(keyword))
         .map((r) => r.line)
-        .slice(0,5)
+        .slice(0, 5);
     });
     setErrorLines(grouped);
 
     if (uniqueKeywords.length === 0) {
-      setOutput("No issues found in logs. Please escalate to Product Solutions.");
+      setOutput(
+        "No issues found in logs. Please escalate to Product Solutions."
+      );
     }
 
     if (
@@ -128,24 +125,23 @@ const Page = () => {
             Download Network Guide
           </a>
         </>
-      )
-     
+      );
     }
 
-
     if (uniqueKeywords.includes("Failed to open BB connection")) {
-        setBbgOutput(
-          "Bloomberg errors found in the logs. Have the user restart the EMS and Bloomberg, open up Bloomberg first and then the EMS."
-        );
-      }
-    if (uniqueKeywords.includes("rt364.exe: Analysis:  Request has timed out...")) {
-        setRestartOutput(
-          "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
-        );
-      }
+      setBbgOutput(
+        "Bloomberg errors found in the logs. Have the user restart the EMS and Bloomberg, open up Bloomberg first and then the EMS."
+      );
+    }
+    if (
+      uniqueKeywords.includes("rt364.exe: Analysis:  Request has timed out...")
+    ) {
+      setRestartOutput(
+        "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
+      );
+    }
 
     setIsLoading(false);
-
   };
 
   const handleClearLog = () => {
@@ -156,7 +152,6 @@ const Page = () => {
     setBbgOutput("");
     setOutput("");
     setRestartOutput("");
-
 
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -173,36 +168,38 @@ const Page = () => {
           Upload a TAL log for analysis
         </p>
         {isLoading ? (
-        <Button
-          variant="elevated"
-          className={cn("rounded-full border-transparent px-3.5 text-lg bg-gray-400 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
-            clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" : ""
-            
-          )}
-          disabled
+          <Button
+            variant="elevated"
+            className={cn(
+              "rounded-full border-transparent px-3.5 text-lg bg-gray-400 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+              clearLog
+                ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
+                : ""
+            )}
+            disabled
           >
             Analysing...
           </Button>
-
-        ): (        <Button
-          variant="elevated"
-          className={cn("rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
-            clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" : ""
-            
-          )}
-          onClick={() => {
-            if (clearLog) {
-              handleClearLog();
-            } else {
-              inputRef.current?.click();
-            }
-          }}
-        >
-          {clearLog ? "Clear log" : "Upload TAL log"}
-        </Button>)}
-
-
-
+        ) : (
+          <Button
+            variant="elevated"
+            className={cn(
+              "rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+              clearLog
+                ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white"
+                : ""
+            )}
+            onClick={() => {
+              if (clearLog) {
+                handleClearLog();
+              } else {
+                inputRef.current?.click();
+              }
+            }}
+          >
+            {clearLog ? "Clear log" : "Upload TAL log"}
+          </Button>
+        )}
 
         <input
           type="file"
@@ -220,8 +217,6 @@ const Page = () => {
               <p> {bbgOutput}</p>
               <p> {restartOutput}</p>
             </div>
-
-
 
             {Object.entries(errorLines).map(([keyword, lines]) => (
               <div key={keyword} className="mb-6">
@@ -242,14 +237,12 @@ const Page = () => {
               </div>
             ))}
           </div>
-        ) : (
-            output ? (
-                <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
-                <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
-                <p>{output}</p>
-                </div>
-            ) : null
-        )}
+        ) : output ? (
+          <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
+            <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
+            <p>{output}</p>
+          </div>
+        ) : null}
       </div>
     </div>
   );
