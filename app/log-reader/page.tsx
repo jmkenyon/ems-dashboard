@@ -32,12 +32,14 @@ const Page = () => {
     setIsLoading(true);
     setClearLog(true);
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const text = e.target?.result;
 
-      setTimeout(() => {
-        analyseFile(text as string);
-      }, 1);
+      try {
+        await analyseFile(text as string);
+      } finally {
+        setIsLoading(false);
+      }
     
     };
     reader.readAsText(file);
