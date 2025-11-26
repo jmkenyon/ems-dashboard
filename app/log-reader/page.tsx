@@ -1,12 +1,25 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useState } from "react";
 
 const Page = () => {
-  const keyWords = ["SOAP", "I/O completion error", "bb failed to connect"];
-  const [output, setOutput] = React.useState<string>("");
-  const [errorLines, setErrorLines] = React.useState<string[]>([]);
+  const keyWords = [
+    "SOAP",
+    "I/O completion error",
+    "Failed to open BB connection",
+    "rt364.exe: Analysis:  Request has timed out..."
+    
+  ];
+
+  const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
+  const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
+
+  const [bbgOutput, setBbgOutput] = React.useState<string>("");
+  const [restartOutput, setRestartOutput] = React.useState<string>("");
+  const [errorLines, setErrorLines] = React.useState<Record<string, string[]>>(
+    {}
+  );
   const [clearLog, setClearLog] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,37 +52,90 @@ const Page = () => {
       .filter(Boolean);
 
     const uniqueKeywords = [...new Set(results.flatMap((r) => r.keywords))];
-    setErrorLines(results.map((r) => r.line));
 
-
+    const grouped: Record<string, string[]> = {};
+    uniqueKeywords.forEach((keyword) => {
+      grouped[keyword] = results
+        .filter((r) => r.keywords.includes(keyword))
+        .map((r) => r.line);
+    });
+    setErrorLines(grouped);
 
     if (uniqueKeywords.length === 0) {
-      setOutput(
-        "No issues found in the log. Please escalate to Product Solutions"
+      return;
+    }
+
+    if (
+      uniqueKeywords.includes("SOAP") &&
+      uniqueKeywords.includes("I/O completion error")
+    ) {
+      setSoapOutput(
+        <>
+          SOAP and I/O completion errors found, suggesting network issues on the
+          client side. Please have client&apos;s IT check firewall and network
+          configuration. Ports 80, 443, and 1838 must be open.`
+          <br />
+          <br />
+          <a
+            href="/networkGuide.pdf"
+            download="/networkGuide.pdf.pdf"
+            className="text-blue-950 underline"
+          >
+            Download Network Guide
+          </a>
+        </>
+      );
+      setIoOutput("");
+    } else if (uniqueKeywords.includes("SOAP")) {
+      setSoapOutput(
+        <>
+          SOAP errors found, suggesting network issues on the client side.
+          Please have client&apos;s IT check firewall and network configuration.
+          Ports 80, 443, and 1838 must be open.`
+          <br />
+          <br />
+          <a
+            href="/networkGuide.pdf"
+            download="/networkGuide.pdf.pdf"
+            className="text-blue-950 underline"
+          >
+            Download Network Guide
+          </a>
+        </>
+      );
+    } else if (uniqueKeywords.includes("I/O completion error")) {
+      setIoOutput(
+        <>
+          I/O completion errors found, suggesting network issues on the client
+          side. Please have client&apos;s IT check firewall and network
+          configuration. Ports 80, 443, and 1838 must be open.`
+          <br />
+          <br />
+          <a
+            href="/networkGuide.pdf"
+            download="/networkGuide.pdf.pdf"
+            className="text-blue-950 underline"
+          >
+            Download Network Guide
+          </a>
+        </>
       );
     }
 
-    if (uniqueKeywords.includes("SOAP")) {
-      setOutput(
-        "SOAP errors found, suggesting network issues on the client side. Please have client's IT check firewall and network configuration. Port 43, 880, 1240 must be open"
-      );
-    }
-    if (uniqueKeywords.includes("I/O completion error")) {
-      setOutput(
-        "I/O completion errors found, suggesting network issues on the client side. Please have client's IT check firewall and network configuration. Port 43, 880, 1240 must be open"
-      );
-    }
-    if (uniqueKeywords.includes("bb failed to connect")) {
-      setOutput(
-        "Bloomberg errors found in the logs. Have the user restart the EMS and Bloomberg, open up Bloomberg first and then the EMS."
-      );
-    }
 
-
+    if (uniqueKeywords.includes("Failed to open BB connection")) {
+        setBbgOutput(
+          "Bloomberg errors found in the logs. Have the user restart the EMS and Bloomberg, open up Bloomberg first and then the EMS."
+        );
+      }
+    if (uniqueKeywords.includes("rt364.exe: Analysis:  Request has timed out...")) {
+        setRestartOutput(
+          "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
+        );
+      }
   };
 
   const handleClearLog = () => {
-    setOutput("");
     setClearLog(false);
 
     if (inputRef.current) {
@@ -107,15 +173,26 @@ const Page = () => {
           ref={inputRef}
           onChange={handleFileUpload}
         />
-        {output && (
+        {Object.keys(errorLines).length > 0 ? (
           <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
             <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
-            <p>{output}</p>
-            {errorLines.length > 0 && (
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">Error Lines:</h3>
-                <div className="overflow-y-auto border border-gray-200 p-2 rounded bg-gray-50">
-                  {errorLines.map((line, index) => (
+            <div className="flex flex-col gap-2 mb-6">
+              <p> {soapOutput}</p>
+              <p> {ioOutput}</p>
+              <p> {bbgOutput}</p>
+              <p> {restartOutput}</p>
+            </div>
+
+            {bbgOutput}
+
+            {Object.entries(errorLines).map(([keyword, lines]) => (
+              <div key={keyword} className="mb-6">
+                <h3 className="text-lg font-bold text-blue-950 mb-2">
+                  {keyword}
+                </h3>
+
+                <div className="border border-gray-200 bg-gray-50 p-2 rounded">
+                  {lines.map((line, index) => (
                     <p
                       key={index}
                       className="text-sm font-mono whitespace-pre-wrap"
@@ -125,7 +202,14 @@ const Page = () => {
                   ))}
                 </div>
               </div>
-            )}
+            ))}
+          </div>
+        ) : (
+          <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
+            <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
+            <p>
+              No issues found in logs. Please escalate to Product Solutions.
+            </p>
           </div>
         )}
       </div>
