@@ -147,6 +147,13 @@ const Page = () => {
 
   const handleClearLog = () => {
     setClearLog(false);
+    setErrorLines({});
+    setSoapOutput(null);
+    setIoOutput(null);
+    setBbgOutput("");
+    setOutput("");
+    setRestartOutput("");
+    
 
     if (inputRef.current) {
       inputRef.current.value = "";
