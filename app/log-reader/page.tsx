@@ -1,9 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 const Page = () => {
+
   const keyWords = [
     "SOAP",
     "I/O completion error",
@@ -11,6 +13,7 @@ const Page = () => {
     "rt364.exe: Analysis:  Request has timed out..."
     
   ];
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
@@ -25,6 +28,7 @@ const Page = () => {
   const [clearLog, setClearLog] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     const file = event.target.files?.[0];
     if (!file) {
       return;
@@ -40,6 +44,7 @@ const Page = () => {
   };
 
   const analyseFile = (fileContent: string) => {
+   
     const lines = fileContent.split("\n");
 
     const results = lines
@@ -122,7 +127,8 @@ const Page = () => {
             Download Network Guide
           </a>
         </>
-      );
+      )
+      setLoading(false);
     }
 
 
@@ -157,7 +163,11 @@ const Page = () => {
         </p>
         <Button
           variant="elevated"
-          className="rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950"
+          className={cn("rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+            clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" :
+            loading ? "opacity-50 cursor-not-allowed" : ""
+            
+          )}
           onClick={() => {
             if (clearLog) {
               handleClearLog();
@@ -166,7 +176,7 @@ const Page = () => {
             }
           }}
         >
-          {clearLog ? "Upload Another Log" : "Upload TAL log"}
+          {clearLog ? "Upload Another Log" : loading ? "Loading..." : "Upload TAL log"}
         </Button>
 
         <input
