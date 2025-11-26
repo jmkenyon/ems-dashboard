@@ -13,7 +13,7 @@ const Page = () => {
     "rt364.exe: Analysis:  Request has timed out..."
     
   ];
-  const [loading, setLoading] = useState<boolean>(false);
+//   const [loading, setLoading] = useState<boolean>(false);
 
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
@@ -28,7 +28,7 @@ const Page = () => {
   const [clearLog, setClearLog] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
+
     const file = event.target.files?.[0];
     if (!file) {
       return;
@@ -142,7 +142,7 @@ const Page = () => {
           "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine."
         );
       }
-      setLoading(false);
+
   };
 
   const handleClearLog = () => {
@@ -165,8 +165,7 @@ const Page = () => {
         <Button
           variant="elevated"
           className={cn("rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
-            clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" :
-            loading ? "opacity-50 cursor-not-allowed" : ""
+            clearLog ? "bg-white hover:bg-blue-950 text-blue-950 border-blue-950 hover:text-white" : ""
             
           )}
           onClick={() => {
@@ -177,7 +176,7 @@ const Page = () => {
             }
           }}
         >
-          {clearLog ? "Upload Another Log" : loading ? "Loading..." : "Upload TAL log"}
+          {clearLog ? "Upload Another Log" : "Upload TAL log"}
         </Button>
 
         <input
