@@ -15,7 +15,9 @@ const Page = () => {
   const [soapOutput, setSoapOutput] = useState<React.ReactNode>(null);
   const [ioOutput, setIoOutput] = useState<React.ReactNode>(null);
 
+
   const [bbgOutput, setBbgOutput] = React.useState<string>("");
+  const [output, setOutput] = React.useState<string>("");
   const [restartOutput, setRestartOutput] = React.useState<string>("");
   const [errorLines, setErrorLines] = React.useState<Record<string, string[]>>(
     {}
@@ -57,12 +59,13 @@ const Page = () => {
     uniqueKeywords.forEach((keyword) => {
       grouped[keyword] = results
         .filter((r) => r.keywords.includes(keyword))
-        .map((r) => r.line);
+        .map((r) => r.line)
+        .slice(0,5)
     });
     setErrorLines(grouped);
 
     if (uniqueKeywords.length === 0) {
-      return;
+      setOutput("No issues found in logs. Please escalate to Product Solutions.");
     }
 
     if (
@@ -205,12 +208,12 @@ const Page = () => {
             ))}
           </div>
         ) : (
-          <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
-            <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
-            <p>
-              No issues found in logs. Please escalate to Product Solutions.
-            </p>
-          </div>
+            output ? (
+                <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
+                <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
+                <p>{output}</p>
+                </div>
+            ) : null
         )}
       </div>
     </div>
