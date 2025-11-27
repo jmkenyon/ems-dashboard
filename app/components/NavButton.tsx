@@ -11,7 +11,7 @@ const NavButton = ({href, title}: NavButtonProps) => {
     <Button
       asChild
       variant="elevated"
-      className="rounded-full border-transparent px-3.5 text-lg bg-white text-blue-950 hover:bg-white hover:text-blue-950  hover:border-blue-950"
+      className="rounded-full border-transparent md:px-3.5  md:text-lg text-base bg-white text-blue-950 hover:bg-white hover:text-blue-950  hover:border-blue-950"
     >
       <Link href={href} className="cursor-pointer">
         {title}

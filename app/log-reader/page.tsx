@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
 import React, { useState } from "react";
 
 type Results = {
@@ -10,6 +11,10 @@ type Results = {
   bbg: string;
   restart: string;
   noIssues: string;
+  ssm: string;
+  connect: React.ReactNode | null;
+  bandwidth: string;
+  refused: string;
 };
 
 const Page = () => {
@@ -18,6 +23,10 @@ const Page = () => {
     "io completion error",
     "failed to open bb connection",
     "rt364.exe: analysis:  request has timed out",
+    "ssm: connection to @recombiner!ta_srv has been nacked",
+    "unable to connect, invalid host name 255.255.255.255:0",
+    "outbound data buffer from reco108.taltrade.com, 100%% full, 500k of 500k, 11964 messages dropped",
+    "unable to connect to 63.75.60.219:1838: no connection could be made because the target machine actively refused it.",
   ];
 
   const [results, setResults] = useState<Results>({
@@ -26,6 +35,10 @@ const Page = () => {
     bbg: "",
     restart: "",
     noIssues: "",
+    ssm: "",
+    connect: null,
+    bandwidth: "",
+    refused: "",
   });
 
   const defaultResults: Results = {
@@ -34,6 +47,10 @@ const Page = () => {
     bbg: "",
     restart: "",
     noIssues: "",
+    ssm: "",
+    connect: null,
+    bandwidth: "",
+    refused: "",
   };
 
   const [errorLines, setErrorLines] = React.useState<Record<string, string[]>>(
@@ -141,9 +158,36 @@ const Page = () => {
         ...prev,
         io: (
           <>
-            I/O completion errors found, suggesting network issues on the client
-            side. Please have client&apos;s IT check firewall and network
-            configuration. Ports 80, 443, and 1838 must be open.
+            I/O completion errors found, suggesting unspecified network issues
+            on the client side. Please have client&apos;s IT check firewall and
+            network configuration. Ports 80, 443, and 1838 must be open.
+            <br />
+            <br />
+            <a
+              href="/networkGuide.pdf"
+              download="/networkGuide.pdf"
+              className="text-blue-950 underline"
+            >
+              Download Network Guide
+            </a>
+          </>
+        ),
+      }));
+    }
+
+    if (
+      uniqueKeywords.includes(
+        "unable to connect, invalid host name 255.255.255.255:0"
+      )
+    ) {
+      setResults((prev) => ({
+        ...prev,
+        connect: (
+          <>
+            There is a problem with the user’s DNS. This is typically related to
+            larger connection problems. Please have client&apos;s IT check
+            firewall and network configuration. Ports 80, 443, and 1838 must be
+            open.
             <br />
             <br />
             <a
@@ -173,6 +217,41 @@ const Page = () => {
           "rt364.exe: Analysis:  Request has timed out... errors found in the logs. The resolution is to have the user restart their entire machine.",
       }));
     }
+    if (
+      uniqueKeywords.includes(
+        "ssm: connection to @recombiner!ta_srv has been nacked"
+      )
+    ) {
+      setResults((prev) => ({
+        ...prev,
+        ssm: "SSM connection nacked errors found in the logs. This Indicates that the user has authenticated and returned a reco list (ports 80 and 443 are open and working), but that port 1838 is blocked. This is typically a firewall problem. It may also be related to the user’s internal gateway routing.",
+      }));
+    }
+
+    if (
+      uniqueKeywords.includes(
+        "outbound data buffer from reco108.taltrade.com, 100%% full, 500k of 500k, 11964 messages dropped"
+      )
+    ) {
+      setResults((prev) => ({
+        ...prev,
+        bandwidth:
+          "Bandwidth issue detected. The outbound data buffer is full, indicating that the current network bandwidth may be insufficient for the required data transfer. Please check the network connection and consider upgrading the bandwidth to ensure smooth operation.",
+      }));
+    }
+
+    if (
+      uniqueKeywords.includes(
+        "unable to connect to 63.75.60.219:1838: no connection could be made because the target machine actively refused it."
+      )
+    ) {
+      setResults((prev) => ({
+        ...prev,
+        refused:
+          "Connection refused errors found in the logs. This typically indicates that the target server is not accepting connections on the specified port. Please verify that there are no firewall rules blocking access to port 1838.",
+      }));
+    }
+
     setIsLoading(false);
   };
 
@@ -188,8 +267,8 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center p-10 mt-10">
-      <div className="bg-white shadow-2xl rounded-2xl p-15 flex flex-col justify-center shadow-black/50">
+    <div className="flex flex-col justify-center items-center mt-10">
+      <div className="bg-white shadow-2xl rounded-2xl sm:p-15 p-10 flex flex-col justify-center shadow-black/50">
         <h1 className="text-3xl font-bold text-blue-950 mb-6">
           TAL Log Reader
         </h1>
@@ -242,6 +321,10 @@ const Page = () => {
               <p> {results.io}</p>
               <p> {results.bbg}</p>
               <p> {results.restart}</p>
+              <p> {results.ssm}</p>
+              <p> {results.connect}</p>
+              <p> {results.bandwidth}</p>
+              <p> {results.refused}</p>
             </div>
 
             {Object.entries(errorLines).map(([keyword, lines]) => (
