@@ -3,29 +3,60 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
+type Results = {
+  parentheses: string;
+  whitespace: string;
+};
+
 const Page = () => {
   const [rule, setRule] = useState("");
-  const [results, setResults] = useState<string | null>(null);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [results, setResults] = useState<Results>({
+    parentheses: "",
+    whitespace: "",
+  });
+
+  const defaultResults: Results = {
+    parentheses: "",
+    whitespace: "",
+  };
+
+  const isValid = !results.parentheses && !results.whitespace;
 
   const handleSubmit = (e: React.FormEvent) => {
+    setResults(defaultResults)
     e.preventDefault();
+    setHasSubmitted(true);
+    const cleanedRule = rule.trim();
 
-    if ((rule.match(/\(/g) || []).length === (rule.match(/\)/g) || []).length) {
-      setResults("Rule is valid: Parentheses are balanced.");
-    } else if (
-      (rule.match(/\(/g) || []).length > (rule.match(/\)/g) || []).length
-    ) {
-      setResults(
-        `Rule is invalid: Missing ${
+
+    if ((rule.match(/\(/g) || []).length > (rule.match(/\)/g) || []).length) {
+      setResults((prev) => ({
+        ...prev,
+        parentheses: `Missing ${
           (rule.match(/\(/g) || []).length - (rule.match(/\)/g) || []).length
-        } closing parentheses.`
+        } closing parentheses`,
+      }));
+    }
+
+    if ((rule.match(/\)/g) || []).length > (rule.match(/\(/g) || []).length) {
+      console.log(
+        (rule.match(/\)/g) || []).length,(rule.match(/\</g) || []).length
       );
-    } else {
-      setResults(
-        `Rule is invalid: Missing ${
+      setResults((prev) => ({
+        ...prev,
+        parentheses: `Missing ${
           (rule.match(/\)/g) || []).length - (rule.match(/\(/g) || []).length
-        } parentheses.`
-      );
+        } opening parentheses.`,
+      }));
+    }
+    if ((cleanedRule.match(/\s/g) || []).length) {
+      setResults((prev) => ({
+        ...prev,
+        whitespace: `Contains ${
+          (cleanedRule.match(/\s/g) || []).length
+        } whitespace character${(rule.match(/\s/g) || []).length ? "s" : ""}.`,
+      }));
     }
   };
   return (
@@ -52,10 +83,20 @@ const Page = () => {
             Check Rule
           </Button>
         </form>
-        {results && (
+        {hasSubmitted && (
           <div className="mt-10 p-4 border border-gray-300 rounded bg-gray-50">
             <h2 className="text-xl font-bold mb-4">Results:</h2>
-            <p className="text-base">{results}</p>
+            <div className="flex flex-col gap-2">
+            <p className="text-base">
+            </p>
+              <p className="text-base">{results.parentheses}</p>
+              <p className="text-base">{results.whitespace}</p>
+              {isValid && (
+                <p className="text-base">
+                  Rule passed checks.
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>
