@@ -4,7 +4,7 @@ import MenuButton from "./MenuButton";
 
 const Navbar = () => {
   return (
-    <nav className="bg-white text-blue-950 p-8 font-bold text-lg shadow-xl flex flex-row items-center">
+    <nav className="bg-white text-blue-950 p-8 font-bold text-lg shadow-xl flex flex-row items-center justify-between">
       <Link
         href="/"
         className="cursor-pointer md:text-2xl sm:text-lg font-bold"
@@ -12,12 +12,12 @@ const Navbar = () => {
         EMS Tool Suite
       </Link>
 
-      <div className="invisible sm:visible sm:flex grow md:justify-center gap-2 justify-end">
+      <div className="hidden sm:flex grow md:justify-center gap-2 justify-end">
         <NavButton href="/time-converter" title="Time Converter" />
         <NavButton href="/log-reader" title="Log Reader" />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex">
         <MenuButton />
       </div>
     </nav>
