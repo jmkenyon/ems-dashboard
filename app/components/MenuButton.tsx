@@ -37,6 +37,9 @@ const MenuButton = () => {
           <Link href="/log-reader" onClick={() => setIsOpen(false)}>
                 Log Reader
           </Link>
+          <Link href="/rule-checker" onClick={() => setIsOpen(false)}>
+                Rule Checker
+          </Link>
          
         </div>
       )}

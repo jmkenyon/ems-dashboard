@@ -267,7 +267,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-10">
+    <div className="flex flex-col justify-center items-center mt-20">
       <div className="bg-white shadow-2xl rounded-2xl sm:p-15 p-10 flex flex-col justify-center shadow-black/50">
         <h1 className="text-3xl font-bold text-blue-950 mb-6">
           TAL Log Reader

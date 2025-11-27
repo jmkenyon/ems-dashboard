@@ -15,6 +15,7 @@ const Navbar = () => {
       <div className="hidden sm:flex grow md:justify-center gap-2 justify-end">
         <NavButton href="/time-converter" title="Time Converter" />
         <NavButton href="/log-reader" title="Log Reader" />
+        <NavButton href="/rule-checker" title="Rule Checker" />
       </div>
 
       <div className="flex">
