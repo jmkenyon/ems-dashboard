@@ -6,6 +6,8 @@ import { useState } from "react";
 type Results = {
   parentheses: string;
   whitespace: string;
+  brackets: string;
+  emptyBrackets: string;
 };
 
 const Page = () => {
@@ -14,21 +16,28 @@ const Page = () => {
   const [results, setResults] = useState<Results>({
     parentheses: "",
     whitespace: "",
+    brackets: "",
+    emptyBrackets: "",
   });
 
   const defaultResults: Results = {
     parentheses: "",
     whitespace: "",
+    brackets: "",
+    emptyBrackets: "",
   };
 
-  const isValid = !results.parentheses && !results.whitespace;
+  const isValid =
+    !results.parentheses &&
+    !results.whitespace &&
+    !results.brackets &&
+    !results.emptyBrackets;
 
   const handleSubmit = (e: React.FormEvent) => {
-    setResults(defaultResults)
+    setResults(defaultResults);
     e.preventDefault();
     setHasSubmitted(true);
     const cleanedRule = rule.trim();
-
 
     if ((rule.match(/\(/g) || []).length > (rule.match(/\)/g) || []).length) {
       setResults((prev) => ({
@@ -40,9 +49,6 @@ const Page = () => {
     }
 
     if ((rule.match(/\)/g) || []).length > (rule.match(/\(/g) || []).length) {
-      console.log(
-        (rule.match(/\)/g) || []).length,(rule.match(/\</g) || []).length
-      );
       setResults((prev) => ({
         ...prev,
         parentheses: `Missing ${
@@ -56,6 +62,18 @@ const Page = () => {
         whitespace: `Contains ${
           (cleanedRule.match(/\s/g) || []).length
         } whitespace character${(rule.match(/\s/g) || []).length ? "s" : ""}.`,
+      }));
+    }
+    if ((rule.match(/\[/g) || []).length !== (rule.match(/\]/g) || []).length) {
+      setResults((prev) => ({
+        ...prev,
+        brackets: "Brackets [] are not balanced.",
+      }));
+    }
+    if ((rule.match(/\[\s*\]/g) || []).length > 0) {
+      setResults((prev) => ({
+        ...prev,
+        emptyBrackets: "Rule contains empty brackets [].",
       }));
     }
   };
@@ -87,15 +105,15 @@ const Page = () => {
           <div className="mt-10 p-4 border border-gray-300 rounded bg-gray-50">
             <h2 className="text-xl font-bold mb-4">Results:</h2>
             <div className="flex flex-col gap-2">
-            <p className="text-base">
-            </p>
-              <p className="text-base">{results.parentheses}</p>
-              <p className="text-base">{results.whitespace}</p>
-              {isValid && (
-                <p className="text-base">
-                  Rule passed checks.
-                </p>
+              {Object.values(results).map(
+                (msg, i) =>
+                  msg && (
+                    <p key={i} className="text-base">
+                      {msg}
+                    </p>
+                  )
               )}
+              {isValid && <p className="text-base">Rule passed checks.</p>}
             </div>
           </div>
         )}
