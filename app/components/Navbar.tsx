@@ -16,7 +16,7 @@ const Navbar = () => {
         <NavButton href="/time-converter" title="Time Converter" />
         <NavButton href="/log-reader" title="Log Reader" />
         <NavButton href="/rule-checker" title="Rule Checker" />
-        <NavButton href="/holiday-checker" title="Holiday Checker" />
+        {/* <NavButton href="/holiday-checker" title="Holiday Checker" /> */}
       </div>
 
       <div className="flex">
