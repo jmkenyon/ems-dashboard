@@ -40,6 +40,9 @@ const MenuButton = () => {
           <Link href="/rule-checker" onClick={() => setIsOpen(false)}>
                 Rule Checker
           </Link>
+          <Link href="/holiday-checker" onClick={() => setIsOpen(false)}>
+                Holiday Checker
+          </Link>
          
         </div>
       )}

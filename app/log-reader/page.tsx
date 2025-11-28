@@ -317,14 +317,14 @@ const Page = () => {
           <div className="mt-10 p-4 border border-gray-300 rounded max-w-3xl">
             <h2 className="text-xl font-semibold mb-4">Analysis Results:</h2>
             <div className="flex flex-col gap-2 mb-6">
-              <p> {results.soap}</p>
-              <p> {results.io}</p>
-              <p> {results.bbg}</p>
-              <p> {results.restart}</p>
-              <p> {results.ssm}</p>
-              <p> {results.connect}</p>
-              <p> {results.bandwidth}</p>
-              <p> {results.refused}</p>
+              {Object.values(results).map(
+                (msg, i) =>
+                  msg && (
+                    <p key={i} className="text-base">
+                      {msg}
+                    </p>
+                  )
+              )}
             </div>
 
             {Object.entries(errorLines).map(([keyword, lines]) => (
