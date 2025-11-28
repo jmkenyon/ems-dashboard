@@ -27,56 +27,49 @@ const Page = () => {
     emptyBrackets: "",
   };
 
-  const isValid =
-    !results.parentheses &&
-    !results.whitespace &&
-    !results.brackets &&
-    !results.emptyBrackets;
+  const isValid = Object.values(results).every((msg) => msg === "");
 
   const handleSubmit = (e: React.FormEvent) => {
     setResults(defaultResults);
     e.preventDefault();
     setHasSubmitted(true);
-    const cleanedRule = rule.trim();
-
-    if ((rule.match(/\(/g) || []).length > (rule.match(/\)/g) || []).length) {
-      setResults((prev) => ({
-        ...prev,
-        parentheses: `Missing ${
-          (rule.match(/\(/g) || []).length - (rule.match(/\)/g) || []).length
-        } closing parentheses`,
-      }));
-    }
-
-    if ((rule.match(/\)/g) || []).length > (rule.match(/\(/g) || []).length) {
-      setResults((prev) => ({
-        ...prev,
-        parentheses: `Missing ${
-          (rule.match(/\)/g) || []).length - (rule.match(/\(/g) || []).length
-        } opening parentheses.`,
-      }));
-    }
-    if ((cleanedRule.match(/\s/g) || []).length) {
-      setResults((prev) => ({
-        ...prev,
-        whitespace: `Contains ${
-          (cleanedRule.match(/\s/g) || []).length
-        } whitespace character${(rule.match(/\s/g) || []).length ? "s" : ""}.`,
-      }));
-    }
-    if ((rule.match(/\[/g) || []).length !== (rule.match(/\]/g) || []).length) {
-      setResults((prev) => ({
-        ...prev,
-        brackets: "Brackets [] are not balanced.",
-      }));
-    }
-    if ((rule.match(/\[\s*\]/g) || []).length > 0) {
-      setResults((prev) => ({
-        ...prev,
-        emptyBrackets: "Rule contains empty brackets [].",
-      }));
-    }
+    setResults(validateRule(rule));
   };
+
+  function validateRule(rule: string): Results {
+    const trimmedRule = rule.trim();
+
+    const leftParens = (rule.match(/\(/g) || []).length;
+    const rightParens = (rule.match(/\)/g) || []).length;
+
+    const whitespaceChars = trimmedRule.match(/\s/g)
+
+    return {
+      parentheses:
+        leftParens !== rightParens
+          ? `Missing ${Math.abs(leftParens - rightParens)} ${
+              leftParens > rightParens ? "closing" : "opening"
+            } parentheses`
+          : "",
+
+      whitespace: whitespaceChars ? 
+       `Contains ${
+              whitespaceChars.length
+            } whitespace character(s).`
+          : "",
+
+      brackets:
+        (rule.match(/\[/g) || []).length !== (rule.match(/\]/g) || []).length
+          ? "Brackets [] are not balanced."
+          : "",
+
+      emptyBrackets:
+        (rule.match(/\[\s*\]/g) || []).length > 0
+          ? "Rule contains empty brackets []."
+          : "",
+    };
+  }
+
   return (
     <div className=" flex flex-col justify-center items-center py-20 px-2">
       <div className="bg-white  text-blue-950 md:p-20 sm:p-10 px-5 py-10 flex flex-col rounded-2xl shadow-2xl shadow-black/50 sm:max-w-3xl w-full">
@@ -89,7 +82,7 @@ const Page = () => {
               autoFocus
               rows={6}
               value={rule}
-              className="border border-w rounded border-gray-500 bg-gray-50 p-1 "
+              className="border rounded border-gray-500 bg-gray-50 p-1 "
               onChange={(e) => setRule(e.target.value)}
             />
           </label>
