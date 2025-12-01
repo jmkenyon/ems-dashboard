@@ -9,12 +9,14 @@ import PageSkeleton from "../components/PageSkeleton";
 
 const Page = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [results, setResults] = React.useState<
     { market: string; date: string, is_holiday: boolean, error: string }[]
   >([]);
 
   
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true)
     const file = event.target.files?.[0];
     inputRef.current?.click();
     if (file) {
@@ -36,19 +38,23 @@ const Page = () => {
 
       reader.readAsText(file);
     }
+    setIsLoading(false)
   };
 
   return (
-    <PageSkeleton title="Holiday Checker" subtitle="Upload a CSV or Excel file with market holidays to check if the dates are holidays." >
+    <PageSkeleton title="Holiday Checker" subtitle="Upload a CSV or Excel file with market holidays to check if the dates are holidays." size="lg">
 
         <Button
           variant="elevated"
-          className="rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950"
+          className={cn("rounded-full border-transparent px-3.5 text-lg bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950",
+            isLoading && "opacity-50 cursor-not-allowed"
+          )}
           onClick={() => {
             inputRef.current?.click();
+
           }}
         >
-          Upload File
+          {isLoading ? "Checking holidays" : "Upload File"}
         </Button>
         <input
           type="file"

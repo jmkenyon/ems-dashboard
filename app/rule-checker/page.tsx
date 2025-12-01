@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import FormButton from "../components/FormButton";
+import PageSkeleton from "../components/PageSkeleton";
 
 type Results = {
   parentheses: string;
@@ -71,9 +72,7 @@ const Page = () => {
   }
 
   return (
-    <div className=" flex flex-col justify-center items-center py-20 px-2">
-      <div className="bg-white  text-blue-950 md:p-20 sm:p-10 px-5 py-10 flex flex-col rounded-2xl shadow-2xl shadow-black/50 sm:max-w-3xl w-full">
-        <h1 className="sm:text-3xl text-2xl font-bold mb-6">Rule Checker</h1>
+    <PageSkeleton title="Rule Checker" subtitle="Check your rules for common syntax issues." size="md">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <label className="flex flex-col gap-3 text-base sm:text-lg">
             Enter a rule:
@@ -107,8 +106,7 @@ const Page = () => {
             </div>
           </div>
         )}
-      </div>
-    </div>
+    </PageSkeleton>
   );
 };
 

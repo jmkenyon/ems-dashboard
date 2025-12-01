@@ -94,6 +94,7 @@ const TimeConverterPage = () => {
     <PageSkeleton
       title="Time Stamp Converter"
       subtitle="Convert server timestamps between different time zones."
+      size="md"
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <label className="text-sm sm:text-base">
