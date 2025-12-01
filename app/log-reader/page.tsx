@@ -62,7 +62,6 @@ const Page = () => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    setIsLoading(true)
     if (!file) {
       alert("Something went wrong!");
       return;
@@ -71,15 +70,9 @@ const Page = () => {
     setClearLog(true);
     const reader = new FileReader();
     reader.onload = (e) => {
-      try {
       const text = e.target?.result;
       analyseFile(text as string);
-      } catch (err) {
-        console.log(err)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+    };
     reader.readAsText(file);
   };
 
@@ -260,7 +253,7 @@ const Page = () => {
       }));
     }
 
-
+    setIsLoading(false);
   };
 
   const handleClearLog = () => {
@@ -298,7 +291,7 @@ const Page = () => {
               if (clearLog) {
                 handleClearLog();
               } else {
-
+                setIsLoading(true);
                 inputRef.current?.click();
               }
             }}
