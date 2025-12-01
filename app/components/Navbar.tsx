@@ -7,9 +7,10 @@ const Navbar = () => {
     <nav className="bg-white text-blue-950 py-8 md:px-8 px-4 font-bold text-base shadow-xl flex flex-row items-center justify-between">
       <Link
         href="/"
-        className="cursor-pointer lg:text-2xl text-base font-bold"
+        className="cursor-pointer font-bold "
       >
-        EMS Tool Suite
+        <span className="hidden md:block lg:text-2xl">EMS Tool Suite</span>
+        <span className="block md:hidden text-base">Tool Suite</span>
       </Link>
 
       <div className="hidden sm:flex grow md:justify-center md:gap-2 justify-end">
