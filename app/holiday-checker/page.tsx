@@ -5,6 +5,7 @@ import React from "react";
 import { parseHolidayFile } from "@/lib/parseFile";
 import { sendHolidaysToBackend } from "./sendToBackend";
 import { cn } from "../libs/utils";
+import PageSkeleton from "../components/PageSkeleton";
 
 const Page = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -38,14 +39,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20 mx-2">
-      <div className="bg-white shadow-2xl rounded-2xl sm:p-15 p-10 flex flex-col justify-center shadow-black/50 sm:max-w-4xl w-full">
-        <h1 className="text-3xl font-bold text-blue-950 mb-6">
-          Market Holiday Checker
-        </h1>
-        <p className="pb-20 text-gray-500 text-base">
-          Upload the exchange holidays excel file to check market holidays.
-        </p>
+    <PageSkeleton title="Holiday Checker" subtitle="Upload a CSV or Excel file with market holidays to check if the dates are holidays." >
 
         <Button
           variant="elevated"
@@ -86,8 +80,8 @@ const Page = () => {
             </ul>
           </div>
         )}
-      </div>
-    </div>
+      </PageSkeleton>
+    
   );
 };
 

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { DateTime } from "luxon";
-import { Button } from "@/components/ui/button";
-
+import PageSkeleton from "../components/PageSkeleton";
+import FormButton from "../components/FormButton";
 
 const TimeConverterPage = () => {
   const [server, setServer] = useState("");
@@ -27,8 +27,9 @@ const TimeConverterPage = () => {
   ];
   const [ukTime, setUkTime] = useState("");
   const [cetTime, setCetTime] = useState("");
-  const [njTime, setNjTime] = useState("");
+
   const [chicagoTime, setChicagoTime] = useState("");
+  const [njTime, setNjTime] = useState("");
   const [hkTime, setHkTime] = useState("");
   const regexColon = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
   const regexNumbers = /^([01]\d|2[0-3])([0-5]\d)([0-5]\d)$/;
@@ -80,79 +81,68 @@ const TimeConverterPage = () => {
       convertTime(timestamp, sourceZone, zone)
     );
 
-    const [ukTime, cetTime, njTime, chicagoTime, hkTime] = convertedTimes;
+    const [ukTime, cetTime, chicagoTime, njTime, hkTime] = convertedTimes;
     setUkTime(ukTime);
     setCetTime(cetTime);
-    setNjTime(njTime);
+
     setChicagoTime(chicagoTime);
+    setNjTime(njTime);
     setHkTime(hkTime);
   };
 
   return (
-    <div className=" flex flex-col justify-center items-center py-20 px-2">
-      <div className="bg-white  text-blue-950 md:p-20 sm:p-10 px-5 py-10 flex flex-col rounded-2xl shadow-2xl shadow-black/50">
-        <h1 className="sm:text-3xl text-lg font-bold mb-6">
-          Time Stamp Converter
-        </h1>
-        <p className="text-gray-500 pb-10 sm:text-base text-sm">
-          Enter the prefix of the server and the timestamp you are looking to
-          convert
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <label className="text-sm sm:text-base">
-            Choose a server:
-            <select
-              className="ml-4"
-              onChange={(e) => setServer(e.target.value)}
-              value={server}
-            >
-              <option value="">-- Select --</option>
-              <option value="NJ">NJ</option>
-              <option value="OMS">OMS</option>
-              <option value="LD6">LD6</option>
-            </select>
-          </label>
-          <label className="flex flex-row gap-3 text-sm sm:text-base">
-            Enter a timestamp:
-            <input
-              name="timestamp"
-              value={timestamp}
-              placeholder="HH:MM:SS"
-              className="border border-w rounded border-gray-500 bg-gray-50 px-1"
-              onChange={(e) => setTimestamp(e.target.value)}
-            />
-          </label>
-          <Button
-            type="submit"
-            variant="elevated"
-            className="rounded-full border-transparent px-3.5 text-lg mt-10 bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950"
+    <PageSkeleton
+      title="Time Stamp Converter"
+      subtitle="Convert server timestamps between different time zones."
+    >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <label className="text-sm sm:text-base">
+          Choose a server:
+          <select
+            className="ml-4"
+            onChange={(e) => setServer(e.target.value)}
+            value={server}
           >
-            Convert time
-          </Button>
-        </form>
-        {showResults && (
-          <div className="max-w-1/2">
-            <h2 className="text-xl font-bold pt-10 pb-2">Converted Times:</h2>
-            <div className="grid grid-cols-2 gap-y-1 mt-6">
-              <p className="font-bold">UK:</p>
-              <p>{ukTime}</p>
+            <option value="">-- Select --</option>
+            <option value="NJ">NJ</option>
+            <option value="OMS">OMS</option>
+            <option value="LD6">LD6</option>
+          </select>
+        </label>
+        <label className="flex flex-row gap-3 text-sm sm:text-base">
+          Enter a timestamp:
+          <input
+            name="timestamp"
+            value={timestamp}
+            placeholder="HH:MM:SS"
+            className="border border-w rounded border-gray-500 bg-gray-50 px-1"
+            onChange={(e) => setTimestamp(e.target.value)}
+          />
+        </label>
+        <FormButton>Convert Time</FormButton>
+      </form>
+      {showResults && (
+        <div className="max-w-1/2">
+          <h2 className="text-xl font-bold pt-10 pb-2">Converted Times:</h2>
+          <div className="grid grid-cols-2 gap-y-1 mt-6">
+            <p className="font-bold">UK:</p>
+            <p>{ukTime}</p>
 
-              <p className="font-bold">CET:</p>
-              <p>{cetTime}</p>
+            <p className="font-bold">CET:</p>
+            <p>{cetTime}</p>
 
-              <p className="font-bold">Chicago:</p>
-              <p>{chicagoTime}</p>
+            <p className="font-bold">Chicago:</p>
+            <p>{chicagoTime}</p>
 
-              <p className="font-bold">New Jersey:</p>
-              <p>{njTime}</p>
+            <p className="font-bold">New Jersey:</p>
+            <p>{njTime}</p>
 
-              <p className="font-bold">Hong Kong:</p>
-              <p>{hkTime}</p>
-            </div>
+            <p className="font-bold">Hong Kong:</p>
+            <p>{hkTime}</p>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </PageSkeleton>
   );
 };
 

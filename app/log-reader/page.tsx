@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import React, { useState } from "react";
+import PageSkeleton from "../components/PageSkeleton";
 
 type Results = {
   soap: React.ReactNode | null;
@@ -267,14 +268,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20">
-      <div className="bg-white shadow-2xl rounded-2xl sm:p-15 p-10 flex flex-col justify-center shadow-black/50">
-        <h1 className="text-3xl font-bold text-blue-950 mb-6">
-          TAL Log Reader
-        </h1>
-        <p className="pb-20 text-gray-500 text-base">
-          Upload a TAL log for analysis
-        </p>
+  <PageSkeleton title="TAL Log Reader" subtitle="Upload TAL log files to automatically identify common issues and their resolutions." size="sm">
 
         {isLoading ? (
           <Button
@@ -352,8 +346,7 @@ const Page = () => {
             <p>{results.noIssues}</p>
           </div>
         ) : null}
-      </div>
-    </div>
+      </PageSkeleton>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import FormButton from "../components/FormButton";
 
 type Results = {
   parentheses: string;
@@ -86,13 +86,10 @@ const Page = () => {
               onChange={(e) => setRule(e.target.value)}
             />
           </label>
-          <Button
-            type="submit"
-            variant="elevated"
-            className="rounded-full border-transparent px-3.5 text-lg mt-10 bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950"
-          >
-            Check Rule
-          </Button>
+        
+          <FormButton>
+          Check Rule
+          </FormButton>
         </form>
         {hasSubmitted && (
           <div className="mt-10 p-4 border border-gray-300 rounded bg-gray-50">
