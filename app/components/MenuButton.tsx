@@ -43,6 +43,9 @@ const MenuButton = () => {
           <Link href="/holiday-checker" onClick={() => setIsOpen(false)}>
                 Holiday Checker
           </Link>
+          <Link href="/xapi-server" onClick={() => setIsOpen(false)}>
+                xAPI Server
+          </Link>
          
         </div>
       )}
