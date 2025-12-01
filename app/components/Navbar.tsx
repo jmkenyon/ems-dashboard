@@ -13,7 +13,7 @@ const Navbar = () => {
         <span className="block md:hidden text-base">Tool Suite</span>
       </Link>
 
-      <div className="hidden sm:flex grow justify-end">
+      <div className="hidden sm:flex grow md:justify-center justify-end">
         <NavButton href="/time-converter" title="Time Converter" />
         <NavButton href="/log-reader" title="Log Reader" />
         <NavButton href="/rule-checker" title="Rule Checker" />
