@@ -9,7 +9,7 @@ interface FormButtonProps {
 const FormButton = ({ children, onClick, disabled}: FormButtonProps) => {
   return (
     <Button
-      type="submit"
+      type="button"
       variant="elevated"
       className="rounded-full border-transparent px-3.5 text-lg mt-10 bg-blue-950 text-white hover:bg-white hover:text-blue-950  hover:border-blue-950"
       onClick={onClick}

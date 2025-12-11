@@ -16,12 +16,14 @@ const Page = () => {
   async function connectServer() {
     setIsLoading(true);
     try {
+      console.log("attempt")
       const response = await fetch(`${API_URL}/connect-servers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
+      console.log("API_URL =", API_URL);
       const data = await response.json();
       setResults(data);
     } catch (err) {
