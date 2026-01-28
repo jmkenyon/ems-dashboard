@@ -4,6 +4,7 @@ import { useState } from "react";
 import FormButton from "../components/FormButton";
 import PageSkeleton from "../components/PageSkeleton";
 import { cn } from "../libs/utils";
+import { Loader2 } from "lucide-react";
 
 interface ConnectResults {
   logs: string[];
@@ -16,7 +17,7 @@ const Page = () => {
   async function connectServer() {
     setIsLoading(true);
     try {
-      console.log("attempt")
+      console.log("attempt");
       const response = await fetch(`${API_URL}/connect-servers`, {
         method: "POST",
         headers: {
@@ -40,21 +41,22 @@ const Page = () => {
       size="md"
     >
       <FormButton onClick={connectServer} disabled={isLoading}>
+        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
         {isLoading ? "Connecting..." : "Run test"}
       </FormButton>
       {results && (
         <ul className="mt-6 list-none border border-gray-200 bg-gray-50 p-4 rounded shadow-sm">
           {results.logs.map((line, index) => (
             <li
-            key={index}
-            className={cn(
-              "font-mono whitespace-pre-wrap mb-1",
-              line.toLowerCase().includes("success") && "text-green-600",
-              line.toLowerCase().includes("fail") && "text-red-600",
-            )}
-          >
-            {line}
-          </li>
+              key={index}
+              className={cn(
+                "font-mono whitespace-pre-wrap mb-1",
+                line.toLowerCase().includes("success") && "text-green-600",
+                line.toLowerCase().includes("fail") && "text-red-600"
+              )}
+            >
+              {line}
+            </li>
           ))}
         </ul>
       )}
