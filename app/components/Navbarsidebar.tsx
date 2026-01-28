@@ -69,7 +69,7 @@ const NavbarSidebar = ({ open, onOpenChange }: Props) => {
                 xAPI Server
             </Link>
             <Link
-              href="/network"
+              href="/network-tests"
               className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
               onClick={() => onOpenChange(false)}
             >

@@ -7,7 +7,7 @@ import { Download } from "lucide-react";
 export default function Page() {
   function downloadTool() {
     // direct download link (S3, CDN, etc.)
-    window.location.href = "/networkTests.zip";
+    window.location.href = "/network_tests.zip";
   }
 
   return (
