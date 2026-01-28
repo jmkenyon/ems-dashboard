@@ -6,16 +6,24 @@ interface NavButtonProps {
     title: string;
 }
 
-const NavButton = ({href, title}: NavButtonProps) => {
+const NavButton = ({ href, title }: NavButtonProps) => {
   return (
     <Button
       asChild
       variant="elevated"
-      className="rounded-full border-transparent px-2 lg:px-3.5 lg:text-lg text-sm  bg-white text-blue-950 hover:bg-white hover:text-blue-950  hover:border-blue-950"
+      className="
+        rounded-full
+        px-3 py-1.5
+        text-sm md:text-base
+        text-blue-900
+        transition-all
+
+        hover:text-blue-950
+        hover:scale-[1.03]
+        active:scale-100
+      "
     >
-      <Link href={href} className="cursor-pointer">
-        {title}
-      </Link>
+      <Link href={href}>{title}</Link>
     </Button>
   );
 };
