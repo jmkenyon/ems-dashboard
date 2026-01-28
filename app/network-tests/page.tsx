@@ -5,9 +5,9 @@ import FormButton from "../components/FormButton";
 import { Download } from "lucide-react";
 
 export default function Page() {
-  function downloadTool() {
+  function downloadNetworkTool() {
     // direct download link (S3, CDN, etc.)
-    window.location.href = "/network_tests.zip";
+    window.location.href = "/network_test.zip";
   }
 
   return (
@@ -22,7 +22,7 @@ export default function Page() {
           accurately test your network connectivity.
         </p>
 
-        <FormButton onClick={downloadTool}>
+        <FormButton onClick={downloadNetworkTool}>
           <Download className="h-4 w-4 mr-2" />
           Download Network Checker
         </FormButton>
