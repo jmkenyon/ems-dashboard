@@ -26,7 +26,7 @@ const Navbar = () => {
         <NavButton href="/xapi-server" title="xAPI" />
         <NavButton href="/network" title="Network" />
       </div>
-      <div className="flex md:hidden items-center h-full justify-center">
+      <div className="flex sm:hidden items-center h-full justify-center">
         <Button
           variant="ghost"
 
