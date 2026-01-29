@@ -24,7 +24,7 @@ const Navbar = () => {
         <NavButton href="/rule-checker" title="Rules" />
         <NavButton href="/holiday-checker" title="Holidays" />
         <NavButton href="/xapi-server" title="xAPI" />
-        <NavButton href="/network" title="Network" />
+        <NavButton href="/network-tests" title="Network" />
       </div>
       <div className="flex md:hidden items-center h-full justify-center">
         <Button
