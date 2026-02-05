@@ -76,7 +76,7 @@ const Page = () => {
             )}
           />
           <Label htmlFor="symbol" className="text-base sm:text-lg mt-6">
-            Symbols
+            Symbol
           </Label>
           <div className="flex h-12 flex-row gap-5">
             <FormField
