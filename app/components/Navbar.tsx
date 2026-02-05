@@ -18,13 +18,14 @@ const Navbar = () => {
         <span className="md:hidden">Tool Suite</span>
       </Link>
 
-      <div className="hidden sm:flex gap-2 md:gap-3">
+      <div className="hidden md:flex gap-2 md:gap-3">
         <NavButton href="/time-converter" title="Time" />
         <NavButton href="/log-reader" title="Logs" />
         <NavButton href="/rule-checker" title="Rules" />
         <NavButton href="/holiday-checker" title="Holidays" />
         <NavButton href="/xapi-server" title="xAPI" />
         <NavButton href="/network-tests" title="Network" />
+        <NavButton href="/validation-check" title="Validation" />
       </div>
       <div className="flex md:hidden items-center h-full justify-center">
         <Button

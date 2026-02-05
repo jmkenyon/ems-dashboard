@@ -20,7 +20,7 @@ const PageSkeleton = ({children, title, subtitle, size}: PageSkeletonProps) => {
       <h1 className="text-3xl font-bold text-blue-950 mb-6">
         {title}
       </h1>
-      <p className="pb-20 text-gray-500 text-base">
+      <p className="pb-15 text-gray-500 text-base">
         {subtitle}
       </p>
     {children}
