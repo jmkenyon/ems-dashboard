@@ -27,7 +27,7 @@ const Page = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     data.rule = data.rule.trim();
     if (data.rule === "" || data.symbol === "") {
-      toast.error("Please enter a rule and symbols before submitting.");
+      toast.error("Please enter a rule and symbol");
       return;
     }
 
@@ -35,6 +35,11 @@ const Page = () => {
       (a) => a.index
     );
     const insertIndex = closedParentheses[1];
+
+    if (insertIndex == null) {
+      toast.error("Invalid rule");
+      return;
+    }
 
     const part1 = data.rule.slice(0, insertIndex);
     const part2 = data.rule.slice(insertIndex);
@@ -70,9 +75,9 @@ const Page = () => {
               </FormItem>
             )}
           />
-          <FormLabel htmlFor="symbol" className="text-base sm:text-lg mt-6">
+          <Label htmlFor="symbol" className="text-base sm:text-lg mt-6">
             Symbols
-          </FormLabel>
+          </Label>
           <div className="flex h-12 flex-row gap-5">
             <FormField
               control={form.control}
@@ -81,6 +86,7 @@ const Page = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      id="symbol"
                       {...field}
                       placeholder="Enter a symbol"
                       className="h-full"
