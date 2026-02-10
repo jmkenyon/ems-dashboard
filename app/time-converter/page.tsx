@@ -47,7 +47,6 @@ const TimeConverterPage = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    console.log("HELLLOOO")
     e.preventDefault();
     if (!sourceZone) {
       alert("Please select a valid server.");

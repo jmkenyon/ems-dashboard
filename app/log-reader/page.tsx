@@ -86,14 +86,16 @@ const Page = () => {
         const lower = line.toLowerCase();
         const foundKeywords = keyWords.filter((kw) => lower.includes(kw));
         return foundKeywords.length > 0
+        // return something like { line: "the log line", keywords: ["soap", "io error"] }
           ? { line, keywords: foundKeywords }
           : [];
       })
       .filter(Boolean);
       
-
+      // return array of unique keywords found in file, e.g. ["soap", "io error", "bbg connection"]
     const uniqueKeywords = [...new Set(results.flatMap((r) => r.keywords))];
 
+    // group the results by keyword, e.g. { soap: ["line 1 with soap", "line 2 with soap"], "io error": ["line 1 with io error"] }
     const grouped: Record<string, string[]> = {};
     uniqueKeywords.forEach((keyword) => {
       grouped[keyword] = results
