@@ -32,3 +32,25 @@ export function convertMany(input: string): ConvertResult[] {
     .filter(Boolean)
     .map(convertConfluenceUrl);
 }
+
+export function rewriteBookmarkHtml(html: string): {
+  rewritten: string;
+  converted: number;
+  matched: number;
+} {
+  let converted = 0;
+  let matched = 0;
+  const rewritten = html.replace(
+    /href="(https?:\/\/confluence\.ssnc-corp\.cloud\/spaces\/[^"]+)"/g,
+    (full, url) => {
+      matched++;
+      const result = convertConfluenceUrl(url);
+      if (result.ok) {
+        converted++;
+        return `href="${result.converted}"`;
+      }
+      return full;
+    }
+  );
+  return { rewritten, converted, matched };
+}
