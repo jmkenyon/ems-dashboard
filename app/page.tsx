@@ -1,18 +1,105 @@
+import Link from "next/link";
+import {
+  CalendarDays,
+  CheckCircle2,
+  Clock,
+  FileSearch,
+  Link2,
+  ListChecks,
+  Network,
+  Server,
+} from "lucide-react";
+
+const tools = [
+  {
+    href: "/time-converter",
+    icon: Clock,
+    title: "Time Converter",
+    description: "Convert server timestamps between time zones.",
+  },
+  {
+    href: "/log-reader",
+    icon: FileSearch,
+    title: "TAL Log Reader",
+    description: "Upload TAL logs to identify common issues and resolutions.",
+  },
+  {
+    href: "/rule-checker",
+    icon: ListChecks,
+    title: "Rule Checker",
+    description: "Check your rules for common syntax issues.",
+  },
+  {
+    href: "/holiday-checker",
+    icon: CalendarDays,
+    title: "Holiday Checker",
+    description: "Verify market holidays from a CSV or Excel file.",
+  },
+  {
+    href: "/xapi-server",
+    icon: Server,
+    title: "xAPI Server Checker",
+    description: "Test connectivity to the Chicago and NJ xAPI servers.",
+  },
+  {
+    href: "/network-tests",
+    icon: Network,
+    title: "Network Checker",
+    description: "Run the network diagnostic tool from your machine.",
+  },
+  {
+    href: "/validation-check",
+    icon: CheckCircle2,
+    title: "Validation Rule Editor",
+    description: "Add symbols to a validation rule.",
+  },
+  {
+    href: "/link-converter",
+    icon: Link2,
+    title: "Link Converter",
+    description: "Convert Confluence URLs to their SharePoint equivalents.",
+  },
+];
+
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center items-center p-10 sm:p-2 mt-10">
-      <div className="bg-white shadow-2xl rounded-2xl max-w-3xl text-center sm:p-15 p-5 shadow-black/50">
-        <h1 className="md:text-5xl sm:text-3xl text-lg font-bold text-blue-950 mb-15">
-          Welcome to EMS Tool Suite
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <header className="text-center mb-10 sm:mb-14">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-blue-950">
+          EMS Tool Suite
         </h1>
-        <p className="md:text-xl sm:text-lg text-base text-blue-950 mb-4">
-          Your one-stop solution for troubleshooting EMS queries faster.
+        <p className="mt-3 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          A collection of utilities for troubleshooting EMS queries faster.
+          Pick a tool to get started.
         </p>
-        <p className="md:text-lg sm:text-base text-sm text-blue-950">
-          Use the navigation bar to access various tools designed to streamline
-          your EMS workflow.
-        </p>
+      </header>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        {tools.map((tool) => {
+          const Icon = tool.icon;
+          return (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="group relative bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-blue-900 transition-all duration-200"
+            >
+              <div className="flex items-start gap-4">
+                <div className="shrink-0 size-11 rounded-xl bg-blue-50 text-blue-950 flex items-center justify-center group-hover:bg-blue-950 group-hover:text-white transition-colors">
+                  <Icon size={20} />
+                </div>
+                <div className="min-w-0">
+                  <h2 className="text-lg font-semibold text-blue-950 leading-tight">
+                    {tool.title}
+                  </h2>
+                  <p className="mt-1.5 text-sm text-gray-600 leading-relaxed">
+                    {tool.description}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
-    </div>
+    </main>
   );
 }
