@@ -82,6 +82,13 @@ const NavbarSidebar = ({ open, onOpenChange }: Props) => {
             >
                 Validation Checker
             </Link>
+            <Link
+              href="/link-converter"
+              className="w-full text-left p-4 hover:bg-black hover:text-white flex items-center text-base font-medium"
+              onClick={() => onOpenChange(false)}
+            >
+                Link Converter
+            </Link>
           </div>
         </ScrollArea>
       </SheetContent>
