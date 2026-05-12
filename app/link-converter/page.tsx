@@ -12,10 +12,6 @@ import {
   convertMany,
 } from "@/lib/confluenceToSharepoint";
 
-const EXAMPLE_URLS = `https://confluence.ssnc-corp.cloud/spaces/PST/pages/31327007/Eze+Product+Solutions+Home
-https://confluence.ssnc-corp.cloud/spaces/EMS/pages/33710135/EMS+Home
-https://confluence.ssnc-corp.cloud/spaces/OMS/pages/32499539/Eze+OMS+Home`;
-
 const LinkConverterPage = () => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState<ConvertResult[]>([]);
@@ -39,11 +35,6 @@ const LinkConverterPage = () => {
 
   const handleClear = () => {
     setInput("");
-    setResults([]);
-  };
-
-  const loadExample = () => {
-    setInput(EXAMPLE_URLS);
     setResults([]);
   };
 
@@ -85,18 +76,9 @@ const LinkConverterPage = () => {
             <Link2 size={16} />
             Confluence URLs
           </label>
-          <div className="flex items-center gap-3 text-xs text-gray-500">
-            <span>
-              {lineCount} {lineCount === 1 ? "URL" : "URLs"}
-            </span>
-            <button
-              type="button"
-              onClick={loadExample}
-              className="text-blue-900 hover:underline"
-            >
-              Load example
-            </button>
-          </div>
+          <span className="text-xs text-gray-500">
+            {lineCount} {lineCount === 1 ? "URL" : "URLs"}
+          </span>
         </div>
 
         <textarea
