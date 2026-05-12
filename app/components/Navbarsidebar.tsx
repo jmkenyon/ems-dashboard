@@ -22,6 +22,7 @@ const items = [
   { href: "/network-tests", label: "Network Tests" },
   { href: "/validation-check", label: "Validation Checker" },
   { href: "/link-converter", label: "Link Converter" },
+  { href: "/fix-decoder", label: "FIX Decoder" },
 ];
 
 const NavbarSidebar = ({ open, onOpenChange }: Props) => {

@@ -8,6 +8,7 @@ import {
   ListChecks,
   Network,
   Server,
+  Terminal,
 } from "lucide-react";
 
 const tools = [
@@ -58,6 +59,12 @@ const tools = [
     icon: Link2,
     title: "Link Converter",
     description: "Convert Confluence URLs to their SharePoint equivalents.",
+  },
+  {
+    href: "/fix-decoder",
+    icon: Terminal,
+    title: "FIX Decoder",
+    description: "Paste a FIX message, get an instant plain-English breakdown.",
   },
 ];
 

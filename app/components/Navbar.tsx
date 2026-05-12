@@ -31,6 +31,7 @@ const Navbar = () => {
         <NavButton href="/network-tests" title="Network" />
         <NavButton href="/validation-check" title="Validation" />
         <NavButton href="/link-converter" title="Links" />
+        <NavButton href="/fix-decoder" title="FIX" />
       </div>
 
       <div className="flex lg:hidden ml-auto">
