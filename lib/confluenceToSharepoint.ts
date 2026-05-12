@@ -25,12 +25,14 @@ export function convertConfluenceUrl(url: string): ConvertResult {
   return { ok: true, original: trimmed, converted };
 }
 
+const URL_RE = /https?:\/\/\S+/g;
+
+export function extractUrls(input: string): string[] {
+  return input.match(URL_RE) ?? [];
+}
+
 export function convertMany(input: string): ConvertResult[] {
-  return input
-    .split(/\r?\n/)
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .map(convertConfluenceUrl);
+  return extractUrls(input).map(convertConfluenceUrl);
 }
 
 export function rewriteBookmarkHtml(html: string): {

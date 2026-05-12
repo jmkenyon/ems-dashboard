@@ -18,6 +18,7 @@ import { cn } from "../libs/utils";
 import {
   ConvertResult,
   convertMany,
+  extractUrls,
   rewriteBookmarkHtml,
 } from "@/lib/confluenceToSharepoint";
 
@@ -34,18 +35,15 @@ const LinkConverterPage = () => {
   const [isProcessingFile, setIsProcessingFile] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const lineCount = useMemo(
-    () => input.split(/\r?\n/).filter((l) => l.trim()).length,
-    [input]
-  );
+  const urlCount = useMemo(() => extractUrls(input).length, [input]);
 
   const successCount = results.filter((r) => r.ok).length;
   const skippedCount = results.length - successCount;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) {
-      toast.error("Paste at least one Confluence URL.");
+    if (urlCount === 0) {
+      toast.error("No URLs found in the input.");
       return;
     }
     setResults(convertMany(input));
@@ -163,7 +161,7 @@ const LinkConverterPage = () => {
             Confluence URLs
           </label>
           <span className="text-xs text-gray-500">
-            {lineCount} {lineCount === 1 ? "URL" : "URLs"}
+            {urlCount} {urlCount === 1 ? "URL" : "URLs"} detected
           </span>
         </div>
 
